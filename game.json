@@ -32,6 +32,23 @@
 			"type": "script",
 			"path": "script/main.js",
 			"global": true
+		},
+		"assets/card64.png": {
+			"type": "image",
+			"path": "assets/card64.png",
+			"width": 256,
+			"height": 256
+		},
+		"assets/font64.png": {
+			"type": "image",
+			"path": "assets/font64.png",
+			"width": 512,
+			"height": 512
+		},
+		"util": {
+			"type": "script",
+			"path": "script/util.js",
+			"global": true
 		}
 	},
 	"environment": {

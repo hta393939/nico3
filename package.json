@@ -12,6 +12,7 @@
     "start:multi": "akashic serve .",
     "export-zip": "rimraf game.zip && akashic export zip -o game.zip -s",
     "export-html": "rimraf game && akashic export html -o game",
+    "re": "rimraf ./script && tsc && akashic scan asset script && akashic sandbox .",
     "test": "jest"
   },
   "author": "",

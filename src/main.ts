@@ -1,24 +1,67 @@
+
+import { Util } from "./util";
+
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
 		game: g.game,
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
-		assetIds: ["player", "shot", "se"]
+		assetIds: ["player", "shot", "se",
+		  'assets/font64.png',
+		  'assets/card64.png'
+		]
 	});
 	scene.onLoad.add(() => {
 		// ここからゲーム内容を記述します
 
+		const largeSize = 64;
 		// 各アセットオブジェクトを取得します
 		const playerImageAsset = scene.asset.getImageById("player");
 		const shotImageAsset = scene.asset.getImageById("shot");
 		const seAudioAsset = scene.asset.getAudioById("se");
+
+		const cardAsset = scene.asset.getImageById('assets/card64.png');
 
 		// プレイヤーを生成します
 		const player = new g.Sprite({
 			scene: scene,
 			src: playerImageAsset,
 			width: playerImageAsset.width,
-			height: playerImageAsset.height
+			height: playerImageAsset.height,
 		});
+
+		const foo = new g.Sprite({
+			scene: scene,
+			//src: scene.asset.getImageById('font64.png'),
+			src: cardAsset,
+			//width: fooAsset.width,
+			//height: fooAsset.height,
+			width: largeSize,
+			height: largeSize,
+			x: largeSize * 2,
+			y: largeSize * 2,
+			srcX: largeSize * 1,
+			srcY: largeSize * 2,
+			srcWidth: largeSize,
+			srcHeight: largeSize,
+		});
+		scene.append(foo);
+
+
+		const timePane = Util.multi(scene, 200, 50, 48, 48, 48);
+		scene.setTimeout(() => {
+			timePane.tag.update('123');
+		}, 2000);
+
+		const scorePane = Util.multi(scene, 50, 50, 32, 32, 32);
+		scene.append(scorePane);
+
+		let score = 0;
+		scene.setInterval(() => {
+			score += 10;
+			let scoreText = `     ${score}`;
+			let _len = scoreText.length;
+			scorePane.tag.update(`${scoreText.slice(_len - 5, _len)}`);
+		}, 500);
 
 		// プレイヤーの初期座標を、画面の中心に設定します
 		player.x = (g.game.width - player.width) / 2;
