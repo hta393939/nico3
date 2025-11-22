@@ -1,4 +1,4 @@
-import { PaneParameterObject, SpriteParameterObject, E } from "@akashic/akashic-engine";
+import { PaneParameterObject, SpriteParameterObject } from "@akashic/akashic-engine";
 
 export class Util {
   constructor() {

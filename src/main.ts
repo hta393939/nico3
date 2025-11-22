@@ -1,9 +1,24 @@
 
 import { Util } from "./util";
 
+const _pad = (v: number, n: number) => {
+	const text = `         ${v}`;
+	const len = text.length;
+	return text.slice(len - n, n);
+};
+
 function main(param: g.GameMainParameterObject): void {
+	const game = g.game;
+	game.vars.gameState = {score: 0};
+	let time = 60;
+	const limit = param.sessionParameter?.totalTimeLimit;
+	if (limit) {
+		time = limit;
+	}
+	let remainingTime = 0;
+
 	const scene = new g.Scene({
-		game: g.game,
+		game,
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
 		assetIds: ["player", "shot", "se",
 		  'assets/font64.png',
@@ -48,9 +63,11 @@ function main(param: g.GameMainParameterObject): void {
 
 
 		const timePane = Util.multi(scene, 200, 50, 48, 48, 48);
-		scene.setTimeout(() => {
-			timePane.tag.update('123');
-		}, 2000);
+		scene.append(timePane);
+		function updateTimer() {
+			timePane.tag.update(_pad(remainingTime, 3));
+		}
+
 
 		const scorePane = Util.multi(scene, 50, 50, 32, 32, 32);
 		scene.append(scorePane);
@@ -77,6 +94,8 @@ function main(param: g.GameMainParameterObject): void {
 
 		// 画面をタッチしたとき、SEを鳴らします
 		scene.onPointDownCapture.add(() => {
+			// 場所orエンティティはどうするの??
+
 			seAudioAsset.play();
 
 			// プレイヤーが発射する弾を生成します
@@ -103,9 +122,20 @@ function main(param: g.GameMainParameterObject): void {
 			scene.append(shot);
 		});
 		scene.append(player);
+
+		const timer = scene.setInterval(() => {
+			remainingTime --;
+			if (remainingTime <= 0) {
+				scene.clearInterval(timer);
+			}
+			updateTimer();
+		}, 1000);
+
 		// ここまでゲーム内容を記述します
 	});
-	g.game.pushScene(scene);
+	game.pushScene(scene);
+
+
 }
 
 export = main;

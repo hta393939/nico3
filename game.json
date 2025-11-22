@@ -52,7 +52,15 @@
 		}
 	},
 	"environment": {
-		"sandbox-runtime": "3"
+		"sandbox-runtime": "3",
+		"nicolive": {
+			"supportedModes": [
+				"ranking"
+			]
+		},
+		"preferredSessionParameters": {
+			"totalTimeLimit": 65
+		}
 	},
 	"globalScripts": []
 }
